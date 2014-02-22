@@ -1,0 +1,33 @@
+{
+  "name": "node-game-of-life",
+  "version": "0.0.1",
+  "author": "Michael Payne <benighted@gmail.com>",
+  "description": "Conway's Game of Life for Node.js",
+  "contributors": [],
+  "main": "game.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/benighted/node-game-of-life.git"
+  },
+  "dependencies": {
+    "express": "latest",
+    "jade": "latest"
+  },
+  "engines": {
+    "node": ">=0.10.21"
+  },
+  "bugs": {
+    "url": "https://github.com/benighted/node-game-of-life/issues"
+  },
+  "bundleDependencies": [],
+  "devDependencies": {},
+  "keywords": [
+    "conway",
+    "game",
+    "life"
+  ],
+  "license": "GPL"
+}

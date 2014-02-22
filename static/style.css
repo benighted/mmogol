@@ -1,0 +1,33 @@
+body {
+  color: #fff;
+  background-color: #000;
+}
+
+.row {
+  width: 100%;
+  float: left;
+  clear: left;
+}
+
+.cell {
+  width: 1em;
+  height: 1em;
+
+  font-family: monospace;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 1.25em;
+
+  border-color: #030;
+  border-width: thin;
+  border-radius: 0.5em;
+  border-right-style: solid;
+  border-bottom-style: solid;
+
+  float: left;
+}
+
+.cell.alive {
+  color: #0c0;
+  background-color: #0c0;
+}

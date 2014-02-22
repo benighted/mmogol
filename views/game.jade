@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  pre#game
+      - for (var y = 0; y < height; y++)
+        .row
+          - for (var x = 0; x < width; x++)
+            if cells[x][y]
+              .cell.alive &#9787;
+            else
+              .cell &nbsp;
