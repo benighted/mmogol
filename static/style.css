@@ -1,33 +1,49 @@
 body {
   color: #fff;
+  font-family: sans-serif;
+
   background-color: #000;
 }
 
-.row {
-  width: 100%;
+.row, .col {
   float: left;
-  clear: left;
+}
+
+.row {
+  clear: both;
+}
+
+.col .cell {
+  clear: both;
 }
 
 .cell {
+  float: left;
   width: 1em;
   height: 1em;
+  margin: 0 1px 1px 0;
 
-  font-family: monospace;
-  vertical-align: middle;
-  text-align: center;
   font-size: 1.25em;
+  font-family: monospace;
+  text-align: center;
+  vertical-align: middle;
 
-  border-color: #030;
+  background-color: #010;
+
+  border-color: #020;
   border-width: thin;
-  border-radius: 0.5em;
-  border-right-style: solid;
-  border-bottom-style: solid;
+  border-radius: 0.25em;
+  border-style: none solid solid none;
+}
 
-  float: left;
+.cell:hover {
+  background-color: #030;
+
+  border-color: #060;
 }
 
 .cell.alive {
-  color: #0c0;
   background-color: #0c0;
+
+  border-color: #0f0;
 }

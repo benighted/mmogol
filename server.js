@@ -5,25 +5,33 @@ var express = require('express');
 var game = require('./game');
 var app = express();
 
-app.use(app.router);
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(express.static(__dirname + '/static'));
+app.use(app.router);
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
-
-app.get('/cgol/data', function (req, res) {
-  // console.log('%s %s', req.method, req.url);
-  res.end(JSON.stringify(game.slice()));
-});
 
 app.get('/cgol', function (req, res) {
   // console.log('%s %s', req.method, req.url);
   res.render('game', game);
 });
 
-app.post('/cgol', function (req, res) {
+app.get('/cgol/data', function (req, res) {
   // console.log('%s %s', req.method, req.url);
-  // console.log(req.params);
+  res.end(JSON.stringify(game.dump()));
+});
+
+app.post('/cgol/data', function (req, res) {
+  // console.log('%s %s', req.method, req.url);
+  // console.log(JSON.stringify(req.body));
+  if (req.body) {
+    if (req.body.toggle) {
+      game.set.apply(game, req.body.toggle);
+    }
+  }
+  res.end(JSON.stringify(game.dump()));
 });
 
 game.step = step;

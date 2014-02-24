@@ -1,11 +1,10 @@
 extends layout
 
 block content
-  pre#game
-      - for (var y = 0; y < height; y++)
-        .row
-          - for (var x = 0; x < width; x++)
-            if cells[x][y]
-              .cell.alive &#9787;
-            else
-              .cell &nbsp;
+  script(src='http://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js')
+  script(src='app.js')
+
+  #game(ng-app='GameOfLifeClient', data-ng-controller='GameController', data-ng-init='start()')
+    h2 Turn: {{turn}} Population: {{pop}}
+    .col(data-ng-repeat='col in cells track by $index')
+      .cell(data-ng-repeat='cell in col track by $index', data-ng-class='{alive: cell}', data-ng-click='toggle($parent.$index, $index)')

@@ -2,14 +2,14 @@ var timer = null;
 
 module.exports = {
   // todo: add getters and setters for these vars
-  step: 1000,    // writeable
   turn: 0,       // read only
   cells: [],     // writeable
   width: 32,     // read only
   height: 20,    // read only
+  period: 1000,  // writeable
   population: 0, // read only
 
-  init: function () {
+  init: function (callback) {
     for (var x = 0; x < this.width; x++) {
       if (!this.cells[x]) this.cells[x] = [];
       for (var y = 0; y < this.height; y++) {
@@ -17,11 +17,12 @@ module.exports = {
         if (this.cells[x][y]) this.population++;
       }
     }
+    if (callback) callback();
   },
 
   run: function () {
     if (timer) return;
-    timer = setInterval(this.tick.bind(this), this.step) || null;
+    timer = setInterval(this.tick.bind(this), this.period) || null;
   },
 
   pause: function () {
@@ -29,9 +30,9 @@ module.exports = {
     timer = clearInterval(timer) && null;
   },
 
-  tick: function (steps) {
-    if (steps) {
-      for (var i = 0; i < steps; i++) {
+  tick: function (ticks) {
+    if (ticks) {
+      while (ticks--) {
         this.tick();
       }
       return;
@@ -47,9 +48,9 @@ module.exports = {
         alive = snapshot[x][y];
         neighbors = 0;
 
-        for (var x2 = x - 1; x2 < x + 2; x2++) {
+        for (var x2 = x - 1; x2 <= x + 1; x2++) {
           if (x2 < 0 || x2 >= this.width) continue;
-          for (var y2 = y - 1; y2 < y + 2; y2++) {
+          for (var y2 = y - 1; y2 <= y + 1; y2++) {
             if (y2 < 0 || y2 >= this.height) continue;
             if (x === x2 && y === y2) continue;
             if (snapshot[x2][y2]) neighbors++;
@@ -69,6 +70,12 @@ module.exports = {
     }
   },
 
+  get: function (x, y) {
+    if (x >= this.width || y >= this.height) return;
+
+    return this.cells[x][y];
+  },
+
   set: function (x, y, value) {
     if (x >= this.width || y >= this.height) return;
 
@@ -78,18 +85,24 @@ module.exports = {
         this.set(x[i][0], x[i][1], x[i][2]);
       }
       return;
+    } else if (arguments.length === 2) {
+      // invert if not specified
+      value = !this.cells[x][y];
     }
-
     if (value !== this.cells[x][y]) {
-      population += value ? 1 : -1;
+      this.population += value ? 1 : -1;
       this.cells[x][y] = !!value;
     }
   },
 
-  get: function (x, y) {
-    if (x >= this.width || y >= this.height) return;
-
-    return this.cells[x][y];
+  dump: function () {
+    return {
+      turn: this.turn,
+      cells: this.cells,
+      width: this.width,
+      height: this.height,
+      pop: this.population
+    };
   },
 
   slice: function (x1, y1, x2, y2) {
