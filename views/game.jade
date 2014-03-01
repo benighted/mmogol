@@ -5,6 +5,6 @@ block content
   script(src='app.js')
 
   #game(ng-app='GameOfLifeClient', data-ng-controller='GameController', data-ng-init='start()')
-    h2 Turn: {{turn}} Population: {{pop}}
+    h2 Generation: {{generation}} Population: {{population}}
     .col(data-ng-repeat='col in cells track by $index')
       .cell(data-ng-repeat='cell in col track by $index', data-ng-class='{alive: cell}', data-ng-click='toggle($parent.$index, $index)')

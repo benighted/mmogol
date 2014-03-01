@@ -3,8 +3,8 @@ angular.module('GameOfLifeClient', [])
     $scope.period = 1000;
     $scope.timer = null;
     $scope.cells = [];
-    $scope.turn = 0;
-    $scope.pop = 0;
+    $scope.generation = 0;
+    $scope.population = 0;
 
     $scope.noop = function () {};
 
@@ -29,7 +29,7 @@ angular.module('GameOfLifeClient', [])
     };
 
     $scope.refresh = function (callback) {
-      $http.get('/cgol/data')
+      $http.get('/mmogol/data')
         .success(function(data, status, headers, config) {
           //$scope.log('Loaded data from game server.');
           //$scope.log(data);
@@ -43,7 +43,7 @@ angular.module('GameOfLifeClient', [])
 
     $scope.toggle = function (x, y) {
       $scope.log([x, y]);
-      $http.post('/cgol/data', {toggle: [x, y]})
+      $http.post('/mmogol/data', {toggle: [x, y]})
         .success(function(data, status, headers, config) {
           //$scope.log('Posted data to game server.');
           //$scope.log(data);
@@ -57,8 +57,8 @@ angular.module('GameOfLifeClient', [])
 
     $scope.loadData = function (data) {
       if (data.cells != undefined) $scope.cells = data.cells;
-      if (data.turn  != undefined) $scope.turn  = data.turn;
-      if (data.pop   != undefined) $scope.pop   = data.pop;
+      if (data.generation != undefined) $scope.generation = data.generation;
+      if (data.population != undefined) $scope.population = data.population;
     };
 
     $scope.log = function (msg) {

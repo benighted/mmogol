@@ -2,11 +2,11 @@ var timer = null;
 
 module.exports = {
   // todo: add getters and setters for these vars
-  turn: 0,       // read only
   cells: [],     // writeable
+  period: 1000,  // writeable
   width: 32,     // read only
   height: 20,    // read only
-  period: 1000,  // writeable
+  generation: 0, // read only
   population: 0, // read only
 
   init: function (callback) {
@@ -41,7 +41,7 @@ module.exports = {
     var alive = false, neighbors = 0,
         snapshot = this.cells.slice();
 
-    this.turn++;
+    this.generation++;
 
     for (var y = 0; y < this.height; y++) {
       for (var x = 0; x < this.width; x++) {
@@ -97,11 +97,11 @@ module.exports = {
 
   dump: function () {
     return {
-      turn: this.turn,
       cells: this.cells,
       width: this.width,
       height: this.height,
-      pop: this.population
+      population: this.population,
+      generation: this.generation
     };
   },
 
