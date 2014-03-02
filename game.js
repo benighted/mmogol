@@ -5,7 +5,7 @@ module.exports = {
   cells: [],     // writeable
   period: 1000,  // writeable
   width: 32,     // read only
-  height: 20,    // read only
+  height: 16,    // read only
   generation: 0, // read only
   population: 0, // read only
 
@@ -13,7 +13,7 @@ module.exports = {
     for (var x = 0; x < this.width; x++) {
       if (!this.cells[x]) this.cells[x] = [];
       for (var y = 0; y < this.height; y++) {
-        this.cells[x][y] = Math.random() > 0.9; //!!this.cells[x][y];
+        this.cells[x][y] = Math.random() > 0.9;
         if (this.cells[x][y]) this.population++;
       }
     }
@@ -71,28 +71,39 @@ module.exports = {
   },
 
   get: function (x, y) {
-    if (x >= this.width || y >= this.height) return;
+    if (x >= this.width  ||
+        y >= this.height ||
+        x < 0 || y < 0) return null;
 
     return this.cells[x][y];
   },
 
   set: function (x, y, value) {
-    if (x >= this.width || y >= this.height) return;
+    if (x >= this.width  ||
+        y >= this.height ||
+        x < 0 || y < 0) return null;
 
+    // determine and handle parameter configuration
     if (arguments.length === 1 && Array.isArray(x)) {
+      var cells = [];
       for (var i = 0; i < x.length; i++) {
-        if (x[i].length !== 3) continue;
-        this.set(x[i][0], x[i][1], x[i][2]);
+        cells.push(this.set.apply(this, x[i]));
       }
-      return;
+      return cells; // return cell array
     } else if (arguments.length === 2) {
       // invert if not specified
       value = !this.cells[x][y];
+    } else if (arguments.length !== 3) {
+      return; // invalid arguments given
     }
+
+    // set cell values and population
     if (value !== this.cells[x][y]) {
       this.population += value ? 1 : -1;
       this.cells[x][y] = !!value;
     }
+
+    return this.cells[x][y];
   },
 
   dump: function () {

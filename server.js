@@ -29,12 +29,12 @@ app.get('/mmogol/data', function (req, res) {
   res.end(JSON.stringify(game.dump()));
 });
 
-app.post('/mmogol/data', function (req, res) {
+app.put('/mmogol/data', function (req, res) {
   // console.log('%s %s', req.method, req.url);
   // console.log(JSON.stringify(req.body));
   if (req.body) {
-    if (req.body.toggle) {
-      game.set.apply(game, req.body.toggle);
+    if (req.body.set) {
+      game.set(req.body.set);
     }
     if (req.body.period && req.body.period != game.period) {
       var p = parseInt(req.body.period,10) || game.period;
@@ -47,10 +47,8 @@ app.post('/mmogol/data', function (req, res) {
   res.end(JSON.stringify(game.dump()));
 });
 
-game.period = period;
 game.init();
 game.run();
-
 app.listen(port);
 console.log('Game server listening on port %d', port);
 

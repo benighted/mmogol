@@ -6,5 +6,19 @@ block content
 
   #game(ng-app='GameOfLifeClient', data-ng-controller='GameController', data-ng-init='start()')
     h2 Generation: {{generation}} Population: {{population}}
-    .col(data-ng-repeat='col in cells track by $index')
-      .cell(data-ng-repeat='cell in col track by $index', data-ng-class='{alive: cell}', data-ng-click='toggle($parent.$index, $index)')
+    #board
+      .col(data-ng-repeat='col in cells track by $index')
+        .cell(
+          data-ng-repeat='cell in col track by $index',
+          data-ng-click='setCells([[$parent.$index, $index]])',
+          data-ng-class='{alive: cell}',
+          droptarget
+        )
+    #stage(dragsource)
+      .col(data-ng-repeat='col in stage track by $index')
+        .cell(
+          data-ng-repeat='cell in col track by $index',
+          data-ng-click='toggleStage($parent.$index, $index)',
+          data-ng-class='{alive: cell}',
+          data-ng-mousedown='selectStage($parent.$index, $index)'
+        )

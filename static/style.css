@@ -5,6 +5,12 @@ body {
   background-color: #000;
 }
 
+#board, #stage {
+  float: left;
+  clear: both;
+  margin: 1em;
+}
+
 .row, .col {
   float: left;
 }
@@ -21,7 +27,7 @@ body {
   float: left;
   width: 1em;
   height: 1em;
-  margin: 0 1px 1px 0;
+  margin: 0;
 
   font-size: 1.25em;
   font-family: monospace;
@@ -30,20 +36,18 @@ body {
 
   background-color: #010;
 
-  border-color: #020;
-  border-width: thin;
-  border-radius: 0.25em;
-  border-style: none solid solid none;
+  box-shadow: -0.1em -0.1em 0.2em 0.05em #000 inset;
 }
 
 .cell:hover {
   background-color: #030;
+}
 
-  border-color: #060;
+.cell.dragged {
+  background-color: transparent;  
 }
 
 .cell.alive {
   background-color: #0c0;
-
-  border-color: #0f0;
 }
+

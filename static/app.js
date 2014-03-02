@@ -1,10 +1,12 @@
 angular.module('GameOfLifeClient', [])
   .controller('GameController', function ($scope, $interval, $http) {
-    $scope.period = 1000;
-    $scope.timer = null;
-    $scope.cells = [];
+    $scope.cells      = [];
+    $scope.stage      = [];
+    $scope.timer      = null;
+    $scope.period     = 1000;
     $scope.generation = 0;
     $scope.population = 0;
+    $scope.stageCoord = [];
 
     $scope.noop = function () {};
 
@@ -36,23 +38,43 @@ angular.module('GameOfLifeClient', [])
           $scope.loadData(data);
         })
         .error(function(data, status, headers, config) {
-          $scope.error('Game searver returned status ' + status);
+          $scope.error('Game server returned status ' + status);
           $scope.pause();
         });
     };
 
-    $scope.toggle = function (x, y) {
-      $scope.log([x, y]);
-      $http.post('/mmogol/data', {toggle: [x, y]})
+    $scope.setCells = function (cells) {
+      $http.put('/mmogol/data', {set: cells})
         .success(function(data, status, headers, config) {
           //$scope.log('Posted data to game server.');
           //$scope.log(data);
           $scope.loadData(data);
         })
         .error(function(data, status, headers, config) {
-          $scope.error('Game searver returned status ' + status);
+          $scope.error('Game server returned status ' + status);
           $scope.pause();
         });
+    };
+
+    $scope.toggleStage = function (x, y) {
+      $scope.stage[x][y] = !$scope.stage[x][y];
+    };
+
+    $scope.selectStage = function (x, y) {
+      $scope.stageCoord = [x, y];
+    };
+
+    $scope.resizeStage = function (x, y) {
+      if (x < 1) x = 1;
+      if (y < 1) y = 1;
+
+      while (x < $scope.stage.length) $scope.stage.pop();
+
+      for (i = 0; i < x; i++) {
+        if (!$scope.stage[i]) $scope.stage.push([]);
+        while (y < $scope.stage[i].length) $scope.stage[i].pop();
+        while (y > $scope.stage[i].length) $scope.stage[i].push(false);
+      }
     };
 
     $scope.loadData = function (data) {
@@ -68,5 +90,57 @@ angular.module('GameOfLifeClient', [])
     $scope.error = function (err) {
       if (console) console.error(err);
       else alert(err);
+    };
+
+    // build the initial stage
+    $scope.resizeStage(10,10);
+  })
+
+  .directive('dragsource', function () {
+    return function (scope, element) {
+      var el = element[0];
+
+      el.draggable = true;
+
+      el.addEventListener('dragstart', function (ev) {
+        ev.dataTransfer.setData('Stage', JSON.stringify(scope.stage));
+        this.classList.add('dragging');
+      });
+
+      el.addEventListener('dragend', function (ev) {
+        this.classList.remove('dragging');
+      });
+    };
+  })
+
+  .directive('droptarget', function () {
+    return function (scope, element) {
+      var el = element[0];
+
+      el.addEventListener('dragover', function (ev) {
+        if (ev.preventDefault) ev.preventDefault();
+      });
+
+      el.addEventListener('drop', function (ev) {
+        var data = JSON.parse(ev.dataTransfer.getData('Stage'));
+            ox = scope.$parent.$index - scope.stageCoord[0],
+            oy = scope.$index - scope.stageCoord[1],
+            cells = [];
+
+        if (ev.stopPropagation) ev.stopPropagation();
+
+        for (var x = 0; x < data.length; x++) {
+          for (var y = 0; y < data.length; y++) {
+            if (data[x][y]) cells.push([x + ox, y + oy, true]);
+          }
+        }
+
+        scope.setCells(cells);
+
+        // scope.log(data);
+        // scope.log(cells);
+        // scope.log(scope.stageCoord);
+        // scope.log([scope.$parent.$index, scope.$index]);
+      });
     };
   });
