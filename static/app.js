@@ -3,7 +3,7 @@ angular.module('GameOfLifeClient', [])
     $scope.cells      = [];
     $scope.stage      = [];
     $scope.timer      = null;
-    $scope.period     = 1000;
+    $scope.period     = 100;
     $scope.generation = 0;
     $scope.population = 0;
     $scope.stageCoord = [];
@@ -39,7 +39,6 @@ angular.module('GameOfLifeClient', [])
         })
         .error(function(data, status, headers, config) {
           $scope.error('Game server returned status ' + status);
-          $scope.pause();
         });
     };
 
@@ -52,7 +51,26 @@ angular.module('GameOfLifeClient', [])
         })
         .error(function(data, status, headers, config) {
           $scope.error('Game server returned status ' + status);
-          $scope.pause();
+        });
+    };
+
+    $scope.pauseGame = function (pause) {
+      $http.put('/mmogol/data', pause ? {pause: true} : {run: true})
+        .success(function(data, status, headers, config) {
+          $scope.loadData(data);
+        })
+        .error(function(data, status, headers, config) {
+          $scope.error('Game server returned status ' + status);
+        });
+    };
+
+    $scope.stepGame = function (pause) {
+      $http.put('/mmogol/data', {tick: 1})
+        .success(function(data, status, headers, config) {
+          $scope.loadData(data);
+        })
+        .error(function(data, status, headers, config) {
+          $scope.error('Game server returned status ' + status);
         });
     };
 

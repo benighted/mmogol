@@ -5,7 +5,7 @@ body {
   background-color: #000;
 }
 
-#board, #stage {
+#board, #stage, #panel {
   float: left;
   clear: both;
   margin: 1em;
@@ -37,6 +37,10 @@ body {
   background-color: #010;
 
   box-shadow: -0.1em -0.1em 0.2em 0.05em #000 inset;
+}
+
+.cell span {
+  font-size: 0.25em;
 }
 
 .cell:hover {

@@ -3,9 +3,9 @@ var timer = null;
 module.exports = {
   // todo: add getters and setters for these vars
   cells: [],     // writeable
-  period: 1000,  // writeable
+  period: 200,   // writeable
   width: 32,     // read only
-  height: 16,    // read only
+  height: 20,    // read only
   generation: 0, // read only
   population: 0, // read only
 
@@ -13,7 +13,7 @@ module.exports = {
     for (var x = 0; x < this.width; x++) {
       if (!this.cells[x]) this.cells[x] = [];
       for (var y = 0; y < this.height; y++) {
-        this.cells[x][y] = Math.random() > 0.9;
+        this.cells[x][y] = Math.random() > 0.8;
         if (this.cells[x][y]) this.population++;
       }
     }
@@ -25,9 +25,17 @@ module.exports = {
     timer = setInterval(this.tick.bind(this), this.period) || null;
   },
 
+  running: function () {
+    return !!timer;
+  },
+
   pause: function () {
     if (!timer) return;
     timer = clearInterval(timer) && null;
+  },
+
+  paused: function () {
+    return !timer;
   },
 
   tick: function (ticks) {
@@ -38,13 +46,16 @@ module.exports = {
       return;
     }
 
-    var alive = false, neighbors = 0,
-        snapshot = this.cells.slice();
+    var alive = false,
+        neighbors = 0,
+        snapshot = this.cells;
 
+    this.cells = [];
     this.generation++;
 
-    for (var y = 0; y < this.height; y++) {
-      for (var x = 0; x < this.width; x++) {
+    for (var x = 0; x < this.width; x++) {
+      if (!this.cells[x]) this.cells[x] = [];
+      for (var y = 0; y < this.height; y++) {
         alive = snapshot[x][y];
         neighbors = 0;
 
@@ -52,20 +63,20 @@ module.exports = {
           if (x2 < 0 || x2 >= this.width) continue;
           for (var y2 = y - 1; y2 <= y + 1; y2++) {
             if (y2 < 0 || y2 >= this.height) continue;
-            if (x === x2 && y === y2) continue;
+            if (x === x2 && y === y2) continue; // self
             if (snapshot[x2][y2]) neighbors++;
           }
         }
 
-        if (alive) {
-          if (neighbors < 2 || neighbors > 3) {
-            this.cells[x][y] = alive = false;
-            this.population--;
-          }
-        } else if (neighbors === 3) {
-          this.cells[x][y] = alive = true;
+        if (alive && (neighbors < 2 || neighbors > 3)) {
+          alive = false;
+          this.population--;
+        } else if (!alive && (neighbors === 3)) {
+          alive = true;
           this.population++;
         }
+
+        this.cells[x][y] = alive;
       }
     }
   },

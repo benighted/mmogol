@@ -6,6 +6,10 @@ block content
 
   #game(ng-app='GameOfLifeClient', data-ng-controller='GameController', data-ng-init='start()')
     h2 Generation: {{generation}} Population: {{population}}
+    #panel
+      button(data-ng-click='pauseGame(false)') Run
+      button(data-ng-click='pauseGame(true)')  Pause
+      button(data-ng-click='stepGame(1)')      Step
     #board
       .col(data-ng-repeat='col in cells track by $index')
         .cell(
