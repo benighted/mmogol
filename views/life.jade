@@ -1,0 +1,27 @@
+link(rel="stylesheet", href="GameOfLifeStyle.css")
+
+script(src='http://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js')
+script(src='GameOfLifeClient.js')
+
+.golClient(ng-app='GameOfLifeClient', data-ng-controller='GameController', data-ng-init='start()')
+  h2 Generation: {{generation}} Population: {{population}}
+  .golPanel
+    button(data-ng-click='pauseGame(false)') Run
+    button(data-ng-click='pauseGame(true)')  Pause
+    button(data-ng-click='stepGame(1)')      Step
+  .golBoard
+    .golCol(data-ng-repeat='col in cells track by $index')
+      .golCell(
+        data-ng-repeat='cell in col track by $index',
+        data-ng-click='setCells([[$parent.$index, $index]])',
+        data-ng-class='{alive: cell}',
+        droptarget
+      )
+  .golStage(dragsource)
+    .golCol(data-ng-repeat='col in stage track by $index')
+      .golCell(
+        data-ng-repeat='cell in col track by $index',
+        data-ng-click='toggleStage($parent.$index, $index)',
+        data-ng-class='{alive: cell}',
+        data-ng-mousedown='selectStage($parent.$index, $index)'
+      )

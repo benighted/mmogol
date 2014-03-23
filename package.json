@@ -1,16 +1,16 @@
 {
-  "name": "node-game-of-life",
-  "version": "0.0.1",
+  "name": "mmogol",
+  "version": "0.1.0",
   "author": "Michael Payne <benighted@gmail.com>",
-  "description": "Conway's Game of Life for Node.js",
+  "description": "Massively Multiplayer Online Game of Life",
   "contributors": [],
-  "main": "game.js",
+  "main": "life.js",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/benighted/node-game-of-life.git"
+    "url": "http://github.com/benighted/mmogol.git"
   },
   "dependencies": {
     "express": "latest",
@@ -20,7 +20,7 @@
     "node": ">=0.10.21"
   },
   "bugs": {
-    "url": "https://github.com/benighted/node-game-of-life/issues"
+    "url": "https://github.com/benighted/mmogol/issues"
   },
   "bundleDependencies": [],
   "devDependencies": {},

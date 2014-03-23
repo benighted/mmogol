@@ -1,29 +1,22 @@
-body {
-  color: #fff;
-  font-family: sans-serif;
-
-  background-color: #000;
-}
-
-#board, #stage, #panel {
+.golPanel, .golBoard, .golStage {
   float: left;
   clear: both;
   margin: 1em;
 }
 
-.row, .col {
+.golRow, .golCol {
   float: left;
 }
 
-.row {
+.golRow {
   clear: both;
 }
 
-.col .cell {
+.golCol .golCell {
   clear: both;
 }
 
-.cell {
+.golCell {
   float: left;
   width: 1em;
   height: 1em;
@@ -39,19 +32,18 @@ body {
   box-shadow: -0.1em -0.1em 0.2em 0.05em #000 inset;
 }
 
-.cell span {
+.golCell span {
   font-size: 0.25em;
 }
 
-.cell:hover {
+.golCell:hover {
   background-color: #030;
 }
 
-.cell.dragged {
+.golCell.dragged {
   background-color: transparent;  
 }
 
-.cell.alive {
+.golCell.alive {
   background-color: #0c0;
 }
-

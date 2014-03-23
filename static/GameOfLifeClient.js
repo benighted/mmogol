@@ -111,7 +111,7 @@ angular.module('GameOfLifeClient', [])
     };
 
     // build the initial stage
-    $scope.resizeStage(10,10);
+    $scope.resizeStage(32, 16);
   })
 
   .directive('dragsource', function () {

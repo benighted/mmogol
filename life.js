@@ -5,7 +5,7 @@ module.exports = {
   cells: [],     // writeable
   period: 200,   // writeable
   width: 32,     // read only
-  height: 20,    // read only
+  height: 32,    // read only
   generation: 0, // read only
   population: 0, // read only
 
